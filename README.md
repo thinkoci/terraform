@@ -22,3 +22,11 @@ crash.log
 *.tfplan
 
 .DS_Store
+
+# How to run these projects
+
+1. Check out the git repo.
+2. cd {project folder you need}
+3. terraform init
+4. terraform plan
+5. terraform apply
