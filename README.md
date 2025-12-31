@@ -1,4 +1,4 @@
-# terraform
+# Terraform Projects
 Terraform Scripts for various OCI Projects
 For any issues/clarifications, send out an email to shivinvijai@gmail.com
 
@@ -12,8 +12,13 @@ Assume you already installed OCI CLI in your workstation/laptop and configure yo
 I am not sharing any of my OCI related files in this git repo
 
 .terraform/
+
 *.tfstate*
+
 *.tfvars
+
 crash.log
+
 *.tfplan
+
 .DS_Store
