@@ -1,0 +1,6 @@
+---
+- name: OS hardening and base configuration
+  hosts: web
+  become: yes
+  roles:
+    - os_hardening

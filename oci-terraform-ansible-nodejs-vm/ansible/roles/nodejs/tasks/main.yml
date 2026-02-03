@@ -1,0 +1,38 @@
+---
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - ca-certificates
+      - build-essential
+    state: present
+    update_cache: yes
+
+- name: Install NVM
+  ansible.builtin.shell: |
+    curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
+- name: Load NVM and install Node.js LTS
+  ansible.builtin.shell: |
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+    nvm install --lts
+    nvm alias default lts/*
+  args:
+    executable: /bin/bash
+
+- name: Verify Node.js installation
+  ansible.builtin.shell: |
+    export NVM_DIR="$HOME/.nvm"
+    . "$NVM_DIR/nvm.sh"
+    node -v
+  args:
+    executable: /bin/bash
+  register: node_version
+  changed_when: false
+
+- name: Show Node.js version
+  ansible.builtin.debug:
+    msg: "Installed Node.js version: {{ node_version.stdout }}"

@@ -1,0 +1,48 @@
+---
+# Webserver role - Ubuntu only
+
+- name: Ensure this role runs only on Ubuntu
+  assert:
+    that:
+      - ansible_distribution == "Ubuntu"
+    fail_msg: "webserver role supports Ubuntu only"
+
+# -----------------------------
+# Install Apache
+# -----------------------------
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install Apache HTTP Server
+  apt:
+    name: apache2
+    state: present
+
+# -----------------------------
+# Enable & start Apache
+# -----------------------------
+- name: Enable Apache service
+  service:
+    name: apache2
+    enabled: yes
+    state: started
+
+# -----------------------------
+# Deploy index.html
+# -----------------------------
+- name: Create custom index.html
+  copy:
+    dest: /var/www/html/index.html
+    content: |
+      <html>
+      <head><title>OCI Ubuntu Web Server</title></head>
+      <body>
+        <h1>Apache is running on Ubuntu</h1>
+        <p>Provisioned using Terraform + Ansible</p>
+      </body>
+      </html>
+    owner: www-data
+    group: www-data
+    mode: '0644'

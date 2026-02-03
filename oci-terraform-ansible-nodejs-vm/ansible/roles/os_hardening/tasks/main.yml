@@ -1,0 +1,84 @@
+---
+# OS Hardening - Ubuntu only
+# Safe iptables configuration (prevents SSH lockout)
+
+- name: Ensure OS is Ubuntu
+  assert:
+    that:
+      - ansible_distribution == "Ubuntu"
+    fail_msg: "os_hardening role supports Ubuntu only"
+
+# -----------------------------
+# Update OS packages
+# -----------------------------
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all packages
+  apt:
+    upgrade: dist
+  register: upgrade_result
+  ignore_errors: true
+
+# -----------------------------
+# Disable firewalld if present (not default on Ubuntu, but safe)
+# -----------------------------
+- name: Stop firewalld if installed
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+  ignore_errors: true
+
+# -----------------------------
+# Safe iptables configuration
+# -----------------------------
+- name: Set default iptables policies to ACCEPT (safety first)
+  shell: |
+    iptables -P INPUT ACCEPT
+    iptables -P FORWARD ACCEPT
+    iptables -P OUTPUT ACCEPT
+  become: true
+
+- name: Flush existing iptables rules
+  shell: |
+    iptables -F
+    iptables -X
+  become: true
+
+- name: Allow established and related connections
+  shell: iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+  become: true
+
+- name: Allow loopback traffic
+  shell: iptables -A INPUT -i lo -j ACCEPT
+  become: true
+
+- name: Allow SSH (22)
+  shell: iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+  become: true
+
+- name: Allow HTTP (80)
+  shell: iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+  become: true
+
+- name: Allow HTTPS (443)
+  shell: iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+  become: true
+
+- name: Allow Node.js application port
+  shell: iptables -A INPUT -p tcp --dport 3000 -j ACCEPT
+  become: true
+
+# -----------------------------
+# Verification (debug only)
+# -----------------------------
+- name: Show iptables rules (for debugging)
+  command: iptables -L -n -v
+  register: iptables_output
+
+- name: Print iptables rules
+  debug:
+    var: iptables_output.stdout_lines
