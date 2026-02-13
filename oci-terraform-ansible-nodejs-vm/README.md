@@ -4,6 +4,8 @@ This project is setup an OCI Infrastructure and automate the installation of nod
 
 Below is an end to end project, in which you will get hands on experience in IaC and Configuration management system.
 
+Youtube link : https://www.youtube.com/watch?v=IKAJg9k5tQY
+
 For any issues/clarifications, send out an email to shivinvijai@gmail.com
 
 # Prerequisite
