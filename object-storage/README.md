@@ -3,6 +3,8 @@ This project is to create an Object Storage Bucket in an existing compartment. A
 
 Below is a minimal, Terraform script to create a private OCI Object Storage bucket in a compartment, with the compartment OCID coming from terraform.tfvars.
 
+Youtube link : https://www.youtube.com/watch?v=o1HdiuFA0CI
+
 For any issues/clarifications, send out an email to shivinvijai@gmail.com
 
 # Prerequisite
