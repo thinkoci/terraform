@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="OCI Container Instances Terraform demo">
+  <title>OCI Container Instance Demo</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Terraform + OCI Container Instances</p>
+      <h1>THINKOCI - Frontend and backend are running</h1>
+      <p class="lede">
+        Nginx serves this page and proxies <code>/api</code> to a Python backend in the same OCI Container Instance.
+      </p>
+
+      <div class="status-row" aria-live="polite">
+        <span id="status-dot" class="status-dot pending"></span>
+        <span id="status-text">Contacting backend...</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Backend response</h2>
+        <dl>
+          <div><dt>Message</dt><dd id="message">-</dd></div>
+          <div><dt>Service</dt><dd id="service">-</dd></div>
+          <div><dt>Hostname</dt><dd id="hostname">-</dd></div>
+          <div><dt>Server time</dt><dd id="server-time">-</dd></div>
+        </dl>
+        <button id="refresh" type="button">Refresh response</button>
+      </article>
+
+      <article class="card">
+        <h2>Echo test</h2>
+        <label for="echo-input">Send text to the backend</label>
+        <div class="form-row">
+          <input id="echo-input" type="text" value="Hello from the browser" maxlength="200">
+          <button id="echo-button" type="button">Send</button>
+        </div>
+        <pre id="echo-output">No request sent yet.</pre>
+      </article>
+    </section>
+
+    <footer>
+      <span>Public endpoint: port 80</span>
+      <span>Backend: localhost:8080</span>
+    </footer>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>
